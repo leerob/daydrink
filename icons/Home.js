@@ -11,7 +11,7 @@ const Home = (props) => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             stroke={colorMode === 'light' ? '#2D3748' : '#fff'}
-            stroke-linecap="square"
+            strokeLinecap="square"
             fill="none"
             color={colorMode === 'light' ? '#2D3748' : '#fff'}
             {...props}
