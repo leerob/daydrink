@@ -18,11 +18,13 @@
         "@next/mdx": "^9.0.3",
         "emotion-theming": "10.0.10",
         "formik": "^1.5.8",
+        "graphql-request": "^1.8.2",
         "next": "9.0.3",
         "next-seo": "2.0.0",
         "prism-react-renderer": "^0.1.7",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
+        "react-hook-form": "^3.28.7",
         "react-icons": "^3.7.0",
         "react-live": "2.2.1",
         "react-lorem-component": "^0.13.0",
@@ -31,6 +33,7 @@
         "remark-emoji": "2.0.2",
         "remark-images": "1.0.0",
         "remark-slug": "5.1.2",
-        "remark-unwrap-images": "1.0.0"
+        "remark-unwrap-images": "1.0.0",
+        "swr": "^0.1.12"
     }
 }

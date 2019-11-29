@@ -4,35 +4,37 @@ import {useColorMode, Box, Text, Flex, Spinner} from '@chakra-ui/core';
 import {request} from 'graphql-request';
 import useSWR from 'swr';
 
-import DealCard from '../components/DealCard';
 import SideNav from '../components/SideNav';
 import MobileFilters from '../components/MobileFilters';
+import BarCard from '../components/BarCard';
 
 const API = 'https://daydrink.herokuapp.com/v1/graphql';
 
 export const Container = (props) => <Box width="full" maxWidth="1280px" mx="auto" px={6} {...props} />;
 
-const DealsPage = ({search}) => {
+const BarsPage = ({search}) => {
     const {colorMode} = useColorMode();
     const {data} = useSWR(
         `{
-            deals(order_by: {score: desc}) {
-                score
+            locations {
                 id
-                description
-                alcoholType
-                location {
-                    id
-                    name
+                name
+                city
+                state
+                zip
+                address
+                imageUrl
+                deals {
+                  id
                 }
               }
         }`,
         (query) => request(API, query)
     );
 
-    const matchesSearch = (deal) => deal.description.toLowerCase().includes(search.toLowerCase());
-    const allDeals = data ? data.deals : [];
-    const filteredDeals = allDeals.filter(matchesSearch);
+    const matchesSearch = (location) => location.name.toLowerCase().includes(search.toLowerCase());
+    const allLocations = data ? data.locations : [];
+    const filteredLocations = allLocations.filter(matchesSearch);
 
     return (
         <Box h="100%">
@@ -42,7 +44,7 @@ const DealsPage = ({search}) => {
                     <Container>
                         <MobileFilters />
                         <Text mb={2} fontWeight="bold">
-                            {'Active Now'}
+                            {'Open Now'}
                         </Text>
 
                         {!data ? (
@@ -51,11 +53,11 @@ const DealsPage = ({search}) => {
                             </Flex>
                         ) : (
                             <>
-                                {filteredDeals.map((deal) => (
-                                    <DealCard key={deal.id} {...deal} />
+                                {filteredLocations.map((bar) => (
+                                    <BarCard key={bar.id} {...bar} />
                                 ))}
                                 <Flex justify="flex-end" as="i" color="gray.500">
-                                    {`Showing ${filteredDeals.length} out of ${allDeals.length} deals in Des Moines`}
+                                    {`Showing ${filteredLocations.length} out of ${allLocations.length} bars in Des Moines`}
                                 </Flex>
                             </>
                         )}
@@ -66,4 +68,4 @@ const DealsPage = ({search}) => {
     );
 };
 
-export default DealsPage;
+export default BarsPage;

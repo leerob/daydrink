@@ -7,7 +7,7 @@ const badgeColors = {
     liquor: 'blue'
 };
 
-const BarCard = ({barName, imageUrl, address}) => {
+const BarCard = ({name, address, deals, imageUrl}) => {
     const {colorMode} = useColorMode();
 
     return (
@@ -20,15 +20,15 @@ const BarCard = ({barName, imageUrl, address}) => {
         >
             <Flex>
                 <AspectRatioBox width="120px" ratio={1}>
-                    <Image src={imageUrl} alt={barName} objectFit="cover" />
+                    <Image src={imageUrl} alt={name} objectFit="cover" />
                 </AspectRatioBox>
 
                 <Stack ml={3} mt={2} mb={2}>
                     <Flex align="baseline">
-                        <Badge variantColor="blue">{'Open Now'}</Badge>
+                        <Badge variantColor="blue">{`${deals.length} deals`}</Badge>
                     </Flex>
                     <Box fontSize="xl" fontWeight="semibold" lineHeight="short">
-                        {barName}
+                        {name}
                     </Box>
                     <Flex align="center">
                         <Location mr={1} w="16px" />

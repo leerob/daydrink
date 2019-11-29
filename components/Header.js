@@ -2,11 +2,47 @@
 import {Box, Flex, IconButton, useColorMode, InputGroup, InputLeftElement, Input, Icon} from '@chakra-ui/core';
 import {jsx} from '@emotion/core';
 import Logo from './Logo';
-import {Container} from '../pages';
+import {useState, useEffect, useRef} from 'react';
+
+const useKeyPress = (targetKey) => {
+    const [keyPressed, setKeyPressed] = useState(false);
+
+    const downHandler = ({key}) => {
+        if (key === targetKey) {
+            setKeyPressed(true);
+        }
+    };
+
+    const upHandler = ({key}) => {
+        if (key === targetKey) {
+            setKeyPressed(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', downHandler);
+        window.addEventListener('keyup', upHandler);
+
+        return () => {
+            window.removeEventListener('keydown', downHandler);
+            window.removeEventListener('keyup', upHandler);
+        };
+    }, []);
+
+    return keyPressed;
+};
 
 const Header = (props) => {
+    const {onSearch, search, ...rest} = props;
     const {colorMode, toggleColorMode} = useColorMode();
+    const inputRef = useRef();
+    const slashPress = useKeyPress('/');
     const bg = {light: 'white', dark: 'gray.800'};
+
+    if (slashPress) {
+        console.log('here');
+        inputRef.current.focus();
+    }
 
     return (
         <Box
@@ -20,9 +56,9 @@ const Header = (props) => {
             borderBottomWidth="1px"
             width="full"
             height="4rem"
-            {...props}
+            {...rest}
         >
-            <Container h="100%">
+            <Box width="full" mx="auto" px={6} height="100%">
                 <Flex size="100%" px="6" align="center" justify="space-between">
                     <Box as="a" d="block" href="/" aria-label="Chakra UI, Back to homepage">
                         <Logo />
@@ -31,6 +67,10 @@ const Header = (props) => {
                         <InputLeftElement children={<Icon name="search" color="gray.500" />} />
                         <Input
                             type="text"
+                            onChange={onSearch}
+                            value={search}
+                            ref={inputRef}
+                            autoFocus={slashPress}
                             placeholder={`Search for deals (Press "/" to focus)`}
                             bg={colorMode === 'light' ? 'gray.100' : 'gray.700'}
                         />
@@ -56,7 +96,7 @@ const Header = (props) => {
                         />
                     </Flex>
                 </Flex>
-            </Container>
+            </Box>
         </Box>
     );
 };
