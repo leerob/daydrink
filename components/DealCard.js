@@ -1,4 +1,5 @@
 import {useColorMode, Box, IconButton, Badge, Text, Flex, Stack} from '@chakra-ui/core';
+import {voteOnDeal} from '../graphql/mutations';
 
 const badgeColors = {
     BEER: 'teal',
@@ -6,8 +7,15 @@ const badgeColors = {
     LIQUOR: 'blue'
 };
 
-const DealCard = ({location, score, description, alcoholType}) => {
+const DealCard = ({id, userId, location, userDeals, description, alcoholType}) => {
     const {colorMode} = useColorMode();
+    const currentUserVotedDeal = userDeals.find((voted) => voted.userId === userId);
+    const upvoted = currentUserVotedDeal && currentUserVotedDeal.upvoted;
+    const downvoted = currentUserVotedDeal && !currentUserVotedDeal.upvoted;
+
+    const score = userDeals.reduce((acc, deal) => acc + (deal.upvoted ? 1 : -1), 0);
+    const upvote = () => !upvoted && voteOnDeal({dealId: id, upvoted: true, userId}, currentUserVotedDeal);
+    const downvote = () => !downvoted && voteOnDeal({dealId: id, upvoted: false, userId}, currentUserVotedDeal);
 
     return (
         <Box
@@ -24,7 +32,8 @@ const DealCard = ({location, score, description, alcoholType}) => {
                         icon="chevron-up"
                         size="sm"
                         fontSize="20px"
-                        variant="ghost"
+                        onClick={upvote}
+                        variant={upvoted ? 'solid' : 'ghost'}
                         color="gray.500"
                     />
                     <Box fontWeight="semibold">{score}</Box>
@@ -33,7 +42,8 @@ const DealCard = ({location, score, description, alcoholType}) => {
                         icon="chevron-down"
                         size="sm"
                         fontSize="20px"
-                        variant="ghost"
+                        onClick={downvote}
+                        variant={downvoted ? 'solid' : 'ghost'}
                         color="gray.500"
                     />
                 </Stack>

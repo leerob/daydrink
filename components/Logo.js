@@ -11,7 +11,7 @@ const Logo = (props) => {
             height="6"
             mt={1}
             width="auto"
-            viewBox="0 0 100 20"
+            viewBox="0 0 70 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}

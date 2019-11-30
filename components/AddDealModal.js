@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import useForm from 'react-hook-form';
 import {request} from 'graphql-request';
 import {
@@ -15,15 +15,23 @@ import {
     FormLabel,
     Input,
     Select,
-    Button
+    Button,
+    RadioGroup,
+    Radio,
+    CheckboxGroup,
+    Checkbox
 } from '@chakra-ui/core';
+
+import {useLocations} from '../graphql/hooks';
 
 const API = 'https://daydrink.herokuapp.com/v1/graphql';
 
-const createDeal = ({description, locationId}, onClose) => {
-    const createDealMutation = `mutation createDeal($description: String!, $locationId: uuid!) {
+const createDeal = ({alcoholType, description, locationId}, onClose) => {
+    console.log(alcoholType);
+
+    const createDealMutation = `mutation createDeal($alcoholType: String!, $description: String!, $locationId: uuid!) {
         insert_deals(objects: {
-          alcoholType: "BEER",
+          alcoholType: $alcoholType,
           description: $description,
           locationId: $locationId
         }) {
@@ -35,6 +43,7 @@ const createDeal = ({description, locationId}, onClose) => {
     `;
 
     const variables = {
+        alcoholType,
         description,
         locationId
     };
@@ -47,6 +56,8 @@ function AddDealModal() {
     const {isOpen, onOpen, onClose} = useDisclosure();
     const initialRef = React.useRef();
     const {handleSubmit, register, errors} = useForm();
+    const [alcoholType, setAlcoholType] = useState('BEER');
+    const data = useLocations();
 
     return (
         <>
@@ -56,8 +67,19 @@ function AddDealModal() {
 
             <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
-                    <form onSubmit={handleSubmit((data) => createDeal(data, onClose))}>
+                <ModalContent borderRadius={4}>
+                    <form
+                        onSubmit={handleSubmit((data) =>
+                            createDeal(
+                                {
+                                    alcoholType,
+                                    description: data.description,
+                                    locationId: data.locationId
+                                },
+                                onClose
+                            )
+                        )}
+                    >
                         <ModalHeader>Add Deal</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody pb={6}>
@@ -72,7 +94,6 @@ function AddDealModal() {
                                 />
                                 <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
                             </FormControl>
-
                             <FormControl mt={4} isInvalid={errors.locationId && errors.locationId.message}>
                                 <FormLabel htmlFor="location">Location</FormLabel>
                                 <Select
@@ -83,9 +104,48 @@ function AddDealModal() {
                                     id="location"
                                     placeholder="Select Bar"
                                 >
-                                    <option value="474bcdd3-ea8f-4fbf-a866-a56596ec2fd1">{`Johnny's`}</option>
+                                    {data &&
+                                        data.locations.map(({id, name}) => (
+                                            <option key={id} value={id}>
+                                                {name}
+                                            </option>
+                                        ))}
                                 </Select>
                                 <FormErrorMessage>{errors.locationId && errors.locationId.message}</FormErrorMessage>
+                            </FormControl>
+                            <FormControl as="fieldset" mt={4}>
+                                <FormLabel as="legend">Alcohol Type</FormLabel>
+                                <RadioGroup
+                                    isInline
+                                    spacing={4}
+                                    defaultValue="BEER"
+                                    onChange={(e) => setAlcoholType(e.target.value)}
+                                >
+                                    <Radio value="BEER">Beer</Radio>
+                                    <Radio value="WINE">Wine</Radio>
+                                    <Radio value="LIQUOR">Liquor</Radio>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl mt={4} isInvalid={errors.daysActive && errors.daysActive.message}>
+                                <FormLabel htmlFor="location">Days Active</FormLabel>
+                                <CheckboxGroup
+                                    spacing={1}
+                                    variantColor="teal"
+                                    ref={register({
+                                        required: 'Please select a day.'
+                                    })}
+                                    name="daysActive"
+                                    id="daysActive"
+                                >
+                                    <Checkbox value="Monday">Monday</Checkbox>
+                                    <Checkbox value="Tuesday">Tuesday</Checkbox>
+                                    <Checkbox value="Wednesday">Wednesday</Checkbox>
+                                    <Checkbox value="Thursday">Thursday</Checkbox>
+                                    <Checkbox value="Friday">Friday</Checkbox>
+                                    <Checkbox value="Saturday">Saturday</Checkbox>
+                                    <Checkbox value="Sunday">Sunday</Checkbox>
+                                </CheckboxGroup>
+                                <FormErrorMessage>{errors.daysActive && errors.daysActive.message}</FormErrorMessage>
                             </FormControl>
                         </ModalBody>
 
