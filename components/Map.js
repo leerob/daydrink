@@ -21,7 +21,9 @@ class Map extends Component {
                 mapboxApiAccessToken="pk.eyJ1IjoibHJvYmluc29uIiwiYSI6ImNqcGtrdngwazA0ajIzeG41MHA3eGdvaXQifQ.ZXGWvgIxejlIWqFTPkDzuQ"
                 onViewportChange={(viewport) => this.setState({viewport})}
                 {...this.state.viewport}
-            />
+            >
+                {this.props.children}
+            </ReactMapGL>
         );
     }
 }

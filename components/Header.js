@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import {Box, Flex, IconButton, useColorMode, InputGroup, InputLeftElement, Input, Icon} from '@chakra-ui/core';
 import {jsx} from '@emotion/core';
-import Logo from './Logo';
 import {useState, useEffect, useRef} from 'react';
+
+import MobileNav from './MobileNav';
+import Logo from './Logo';
 
 const useKeyPress = (targetKey) => {
     const [keyPressed, setKeyPressed] = useState(false);
@@ -33,14 +35,13 @@ const useKeyPress = (targetKey) => {
 };
 
 const Header = (props) => {
-    const {onSearch, search, ...rest} = props;
+    const {onSearch, search, hideSearch, ...rest} = props;
     const {colorMode, toggleColorMode} = useColorMode();
     const inputRef = useRef();
     const slashPress = useKeyPress('/');
     const bg = {light: 'white', dark: 'gray.800'};
 
     if (slashPress) {
-        console.log('here');
         inputRef.current.focus();
     }
 
@@ -58,12 +59,12 @@ const Header = (props) => {
             height="4rem"
             {...rest}
         >
-            <Box width="full" mx="auto" px={6} height="100%">
-                <Flex size="100%" px="6" align="center" justify="space-between">
-                    <Box as="a" d="block" href="/" aria-label="Chakra UI, Back to homepage">
+            <Box width="full" mx="auto" px={6} pr={[1, 6]} height="100%">
+                <Flex size="100%" p={[0, 6]} align="center" justify="space-between">
+                    <Box as="a" d="block" href="/" aria-label="daydrink, Back to homepage">
                         <Logo />
                     </Box>
-                    <InputGroup display={['none', null, 'block']} width="100%" ml={16} mr={16}>
+                    <InputGroup display={['none', null, !hideSearch && 'block']} width="100%" ml={16} mr={16}>
                         <InputLeftElement children={<Icon name="search" color="gray.500" />} />
                         <Input
                             type="text"
@@ -78,14 +79,6 @@ const Header = (props) => {
 
                     <Flex align="center" color="gray.500">
                         <IconButton
-                            display={['block', null, 'none']}
-                            aria-label="Search for deals"
-                            icon="search"
-                            fontSize="20px"
-                            variant="ghost"
-                            color="gray.500"
-                        />
-                        <IconButton
                             aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
                             variant="ghost"
                             color="current"
@@ -94,6 +87,7 @@ const Header = (props) => {
                             onClick={toggleColorMode}
                             icon={colorMode === 'light' ? 'moon' : 'sun'}
                         />
+                        {!hideSearch && <MobileNav />}
                     </Flex>
                 </Flex>
             </Box>

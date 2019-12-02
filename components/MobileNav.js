@@ -1,56 +1,53 @@
-import {
-  Drawer,
-  DrawerBody,
-  IconButton,
-  useDisclosure,
-  DrawerOverlay,
-  DrawerContent,
-} from "@chakra-ui/core";
-import React, { useEffect } from "react";
-import { MdDehaze } from "react-icons/md";
-import { SideNavContent } from "./SideNav";
-import { useRouter } from "next/router";
+import {Drawer, DrawerBody, IconButton, useDisclosure, DrawerOverlay, DrawerContent} from '@chakra-ui/core';
+import React, {useEffect} from 'react';
+import {useRouter} from 'next/router';
 
-const useRouteChanged = callback => {
-  const router = useRouter();
-  useEffect(() => {
-    const handleRouteChange = url => {
-      callback();
-      console.log("App is changing to: ", url);
-    };
+import SideNav from './SideNav';
+import Hamburger from '../icons/Hamburger';
 
-    router.events.on("routeChangeComplete", handleRouteChange);
+const useRouteChanged = (callback) => {
+    const router = useRouter();
 
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events, callback]);
+    useEffect(() => {
+        const handleRouteChange = (url) => {
+            callback();
+            console.log('App is changing to: ', url);
+        };
+
+        router.events.on('routeChangeComplete', handleRouteChange);
+
+        return () => {
+            router.events.off('routeChangeComplete', handleRouteChange);
+        };
+    }, [router.events, callback]);
 };
 
 const MobileNav = () => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
-  useRouteChanged(onClose);
+    const {isOpen, onToggle, onClose} = useDisclosure();
 
-  return (
-    <>
-      <IconButton
-        display={{ sm: "inline-flex", md: "none" }}
-        aria-label="Navigation Menu"
-        fontSize="20px"
-        variant="ghost"
-        icon={MdDehaze}
-        onClick={onToggle}
-      />
-      <Drawer size="xs" isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerBody p={0}>
-            <SideNavContent contentHeight="100vh" top="0" />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </>
-  );
+    useRouteChanged(onClose);
+
+    return (
+        <>
+            <IconButton
+                aria-label="Navigation Menu"
+                fontSize="20px"
+                variant="ghost"
+                display={{sm: 'inline-flex', md: 'none'}}
+                color="gray.500"
+                icon={Hamburger}
+                onClick={onToggle}
+            />
+            <Drawer size="xs" isOpen={isOpen} placement="left" onClose={onClose}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerBody p={0}>
+                        <SideNav contentHeight="100vh" top="0" />
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
+        </>
+    );
 };
 
 export default MobileNav;

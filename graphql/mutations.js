@@ -1,45 +1,65 @@
-import {request} from 'graphql-request';
+import gql from 'graphql-tag';
 
-const API = 'https://daydrink.herokuapp.com/v1/graphql';
-
-export const voteOnDeal = ({dealId, upvoted, userId}, userDeal) => {
-    if (userDeal) {
-        const updateUserDealMutation = `mutation updateUserDeal($upvoted: Boolean!, $dealId: uuid!, $userId: String!) {
-            update_user_deal(where: {
-                dealId: {_eq: $dealId},
-                userId: {_eq: $userId}},
-                _set: {upvoted: $upvoted}
-            ){
-                returning {
-                  upvoted
+export const CREATE_DEAL_MUTATION = gql`
+    mutation createDeal(
+        $alcoholType: String!
+        $description: String!
+        $locationId: uuid!
+        $daysActive: [deal_day_insert_input!]!
+    ) {
+        insert_deals(
+            objects: {
+                alcoholType: $alcoholType
+                description: $description
+                locationId: $locationId
+                daysActive: {data: $daysActive}
+            }
+        ) {
+            returning {
+                id
+                description
+                alcoholType
+                userDeals {
+                    upvoted
+                    userId
+                    id
+                }
+                daysActive {
+                    id
+                    dayOfWeek
+                    startTime
+                    endTime
+                    allDay
+                }
+                location {
+                    id
+                    name
                 }
             }
-          }
-        `;
-
-        return request(API, updateUserDealMutation, {
-            dealId,
-            upvoted,
-            userId
-        });
+        }
     }
+`;
 
-    const insertUserDealMutation = `mutation insertUserDeal($upvoted: Boolean!, $dealId: uuid!, $userId: String!) {
-        insert_user_deal(objects: {
-            upvoted: $upvoted,
-            dealId: $dealId,
-            userId: $userId
-        }) {
+export const UPDATE_USER_DEAL_MUTATION = gql`
+    mutation updateUserDeal($upvoted: Boolean!, $dealId: uuid!, $userId: String!) {
+        update_user_deal(where: {dealId: {_eq: $dealId}, userId: {_eq: $userId}}, _set: {upvoted: $upvoted}) {
             returning {
-              id
+                upvoted
+                userId
+                id
             }
         }
-      }
-    `;
+    }
+`;
 
-    return request(API, insertUserDealMutation, {
-        dealId,
-        upvoted,
-        userId
-    });
-};
+export const INSERT_USER_DEAL_MUTATION = gql`
+    mutation insertUserDeal($upvoted: Boolean!, $dealId: uuid!, $userId: String!) {
+        insert_user_deal(objects: {upvoted: $upvoted, dealId: $dealId, userId: $userId}) {
+            returning {
+                upvoted
+                userId
+                id
+            }
+        }
+    }
+`;

@@ -1,31 +1,29 @@
 const SEO = {
     title: 'daydrink | Find the best drink deals and happy hours in your area.',
-    description: 'Simple, Modular and Accessible UI Components for your React Applications. Built with Styled System',
+    description: 'Find the best drink deals and happy hours in your area.',
     openGraph: {
-        url: 'https://chakra-ui.com',
-        title: 'Chakra UI',
-        description:
-            'Simple, Modular and Accessible UI Components for your React Applications. Built with Styled System',
+        url: 'https://daydrink.io',
+        title: 'daydrink',
+        description: 'Find the best drink deals and happy hours in your area.',
         images: [
             {
-                url: 'https://res.cloudinary.com/adebayosegun/image/upload/v1567591645/Chakra%20UI/og-image.png',
+                url: 'https://daydrink.io/static/banner.jpg',
                 width: 1012,
                 height: 506,
-                alt: 'Chakra UI Library - Powered by React and Styled-System'
+                alt: 'daydrink | Find the best drink deals and happy hours in your area.'
             },
             {
-                url:
-                    'https://res.cloudinary.com/adebayosegun/image/upload/v1567591645/Chakra%20UI/twitter-og-image.png',
+                url: 'https://daydrink.io/static/banner.jpg',
                 width: 1200,
                 height: 630,
-                alt: 'Chakra UI Library - Powered by React and Styled-System'
+                alt: 'daydrink | Find the best drink deals and happy hours in your area.'
             }
         ],
-        site_name: 'Chakra UI'
+        site_name: 'daydrink'
     },
     twitter: {
-        handle: '@chakra-ui',
-        site: '@chakra-ui',
+        handle: '@leeerob',
+        site: '@leeerob',
         cardType: 'summary_large_image'
     }
 };

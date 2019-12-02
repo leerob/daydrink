@@ -1,51 +1,25 @@
-import {request} from 'graphql-request';
-import useSWR from 'swr';
+import {useQuery} from '@apollo/react-hooks';
+import {GET_DEALS_QUERY} from './queries';
+import {calculateScoreAndSortDesc} from '../utils/deals';
 
-const API = 'https://daydrink.herokuapp.com/v1/graphql';
+export const useDeals = (dayOfWeek) => {
+    const {loading, error, data} = useQuery(GET_DEALS_QUERY, {
+        variables: {dayOfWeek}
+    });
 
-export const useLocations = () => {
-    const {data} = useSWR(
-        `{
-            locations {
-                id
-                name
-                city
-                state
-                zip
-                address
-                imageUrl
-                deals {
-                  id
-                }
-              }
-        }`,
-        (query) => request(API, query)
-    );
+    if (!loading && data.deals) {
+        return {
+            loading,
+            error,
+            data: {
+                deals: calculateScoreAndSortDesc(data.deals)
+            }
+        };
+    }
 
-    return data;
-};
-
-export const useDeals = () => {
-    const {data} = useSWR(
-        `{
-            deals {
-                id
-                description
-                alcoholType
-                userDeals {
-                    upvoted
-                    userId
-                    id
-                }
-                location {
-                    id
-                    name
-                }
-              }
-        }`,
-        (query) => request(API, query)
-    );
-
-    // Order by calculated score here
-    return data;
+    return {
+        loading,
+        error,
+        data
+    };
 };

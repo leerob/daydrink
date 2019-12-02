@@ -1,12 +1,13 @@
-import {Stack, Link, Text, Box, Flex} from '@chakra-ui/core';
+import {useColorMode, Stack, Text, Box, Flex} from '@chakra-ui/core';
 import React from 'react';
-import Filters from './Filters';
-import AddDealModal from './AddDealModal';
-import Home from '../icons/Home';
-import Deal from '../icons/Deal';
-import WineGlass from '../icons/WineGlass';
-import Map from '../icons/Map';
+
 import {ComponentLink} from './NavLink';
+import AddDealModal from './AddDealModal';
+import Deal from '../icons/Deal';
+import Filters from './Filters';
+import Home from '../icons/Home';
+import Map from '../icons/Map';
+import WineGlass from '../icons/WineGlass';
 
 const SideNavLink = ({href, children, icon}) => (
     <ComponentLink href={href}>
@@ -34,18 +35,31 @@ const PageLinks = () => (
     </Stack>
 );
 
-const SideNav = (props) => (
-    <Box position="fixed" left="0" width="100%" height="100%" top="0" right="0" {...props}>
-        <Box top="4rem" position="relative" overflowY="auto" borderRightWidth="1px">
-            <Box>
-                <Flex justify="space-between" direction="column" height="calc(100vh - 4rem)" fontSize="sm" p="6">
-                    <PageLinks />
-                    <Filters />
-                    <AddDealModal />
-                </Flex>
+const SideNav = (props) => {
+    const {colorMode} = useColorMode();
+
+    return (
+        <Box
+            backgroundColor={colorMode === 'light' ? 'white' : 'gray.800'}
+            position="fixed"
+            left="0"
+            width="100%"
+            height="100%"
+            top="0"
+            right="0"
+            {...props}
+        >
+            <Box top="4rem" position="relative" overflowY="auto" borderRightWidth="1px">
+                <Box>
+                    <Flex justify="space-between" direction="column" height="calc(100vh - 4rem)" fontSize="sm" p="6">
+                        <PageLinks />
+                        <Filters />
+                        <AddDealModal />
+                    </Flex>
+                </Box>
             </Box>
         </Box>
-    </Box>
-);
+    );
+};
 
 export default SideNav;
