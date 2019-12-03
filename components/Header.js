@@ -60,9 +60,9 @@ const Header = (props) => {
             {...rest}
         >
             <Box width="full" mx="auto" px={6} pr={[1, 6]} height="100%">
-                <Flex size="100%" p={[0, 6]} align="center" justify="space-between">
+                <Flex size="100%" p={[0, 6]} pl={[0, 4]} align="center" justify="space-between">
                     <Box as="a" d="block" href="/" aria-label="daydrink, Back to homepage">
-                        <Logo />
+                        <Logo w="100px" />
                     </Box>
                     <InputGroup display={['none', null, !hideSearch && 'block']} width="100%" ml={16} mr={16}>
                         <InputLeftElement children={<Icon name="search" color="gray.500" />} />

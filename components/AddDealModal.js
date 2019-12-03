@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import useForm from 'react-hook-form';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import {
@@ -24,10 +24,13 @@ import {
 import {GET_DEALS_QUERY, GET_LOCATIONS_QUERY} from '../graphql/queries';
 import {CREATE_DEAL_MUTATION} from '../graphql/mutations';
 import {useSearch} from '../utils/search';
+import {withAuthModal} from './Auth';
+import {useAuth} from '../utils/auth';
 import WeekdayButtonGroup from './WeekdayButtonGroup';
 
-function AddDealModal() {
-    const initialRef = React.useRef();
+function AddDealModal({openAuthModal}) {
+    const {userId} = useAuth();
+    const initialRef = useRef();
     const {isOpen, onOpen, onClose} = useDisclosure();
     const {handleSubmit, register, errors} = useForm();
     const {dayOfWeek} = useSearch();
@@ -75,9 +78,17 @@ function AddDealModal() {
         onClose();
     };
 
+    const onOpenDealModal = () => {
+        if (!userId) {
+            return openAuthModal();
+        }
+
+        onOpen();
+    };
+
     return (
         <>
-            <Button onClick={onOpen} leftIcon="add" variantColor="teal" variant="solid" minH="40px" w="100%">
+            <Button onClick={onOpenDealModal} leftIcon="add" variantColor="teal" variant="solid" minH="40px" w="100%">
                 Add New Deal
             </Button>
 
@@ -108,6 +119,7 @@ function AddDealModal() {
                                 <RadioGroup
                                     isInline
                                     spacing={4}
+                                    ref={initialRef}
                                     defaultValue="BEER"
                                     onChange={(e) => setAlcoholType(e.target.value)}
                                 >
@@ -191,4 +203,4 @@ function AddDealModal() {
     );
 }
 
-export default AddDealModal;
+export default withAuthModal(AddDealModal);

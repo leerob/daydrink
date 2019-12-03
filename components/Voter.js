@@ -1,12 +1,11 @@
-import {Box, IconButton, Stack, useDisclosure, useToast} from '@chakra-ui/core';
+import {Box, IconButton, Stack} from '@chakra-ui/core';
 import {useMutation} from '@apollo/react-hooks';
 
 import {UPDATE_USER_DEAL_MUTATION, INSERT_USER_DEAL_MUTATION} from '../graphql/mutations';
 import {GET_DEALS_QUERY} from '../graphql/queries';
 import {calculateScoreAndSortDesc} from '../utils/deals';
 import {useSearch} from '../utils/search';
-import {AuthModal} from './Auth';
-import {useAuth} from '../utils/auth';
+import {withAuthModal} from './Auth';
 
 const updateCacheAfterInsert = ({cache, data, dealId, dayOfWeek}) => {
     const cachedData = cache.readQuery({
@@ -29,12 +28,8 @@ const updateCacheAfterInsert = ({cache, data, dealId, dayOfWeek}) => {
     });
 };
 
-const Voter = ({dealId, userId, score, userDeals}) => {
-    const {isOpen, onOpen, onClose} = useDisclosure();
+const Voter = ({dealId, userId, score, userDeals, openAuthModal}) => {
     const {dayOfWeek} = useSearch();
-    const auth = useAuth();
-    const toast = useToast();
-
     const currentUserVotedDeal = userDeals.find((voted) => voted.userId === userId);
     const upvoted = currentUserVotedDeal && currentUserVotedDeal.upvoted;
     const downvoted = currentUserVotedDeal && !currentUserVotedDeal.upvoted;
@@ -44,7 +39,7 @@ const Voter = ({dealId, userId, score, userDeals}) => {
 
     const onVote = (upvoted) => {
         if (!userId) {
-            onOpen();
+            openAuthModal();
         }
 
         if (currentUserVotedDeal) {
@@ -73,29 +68,6 @@ const Voter = ({dealId, userId, score, userDeals}) => {
         });
     };
 
-    const signUp = ({email, pass}) => {
-        auth.signup(email, pass)
-            .then(() => {
-                toast({
-                    title: 'Success! 🍻',
-                    description: 'Your account has been created.',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true
-                });
-                onClose();
-            })
-            .catch((error) => {
-                toast({
-                    title: 'An error occurred.',
-                    description: error.message,
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true
-                });
-            });
-    };
-
     return (
         <>
             <Stack align="center" ml={2}>
@@ -119,9 +91,8 @@ const Voter = ({dealId, userId, score, userDeals}) => {
                     color="gray.500"
                 />
             </Stack>
-            <AuthModal isOpen={isOpen} onClose={onClose} type="Sign Up" onSubmit={signUp} />
         </>
     );
 };
 
-export default Voter;
+export default withAuthModal(Voter);

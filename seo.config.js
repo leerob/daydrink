@@ -7,13 +7,7 @@ const SEO = {
         description: 'Find the best drink deals and happy hours in your area.',
         images: [
             {
-                url: 'https://daydrink.io/static/banner.jpg',
-                width: 1012,
-                height: 506,
-                alt: 'daydrink | Find the best drink deals and happy hours in your area.'
-            },
-            {
-                url: 'https://daydrink.io/static/banner.jpg',
+                url: 'https://daydrink.io/static/banner.png',
                 width: 1200,
                 height: 630,
                 alt: 'daydrink | Find the best drink deals and happy hours in your area.'

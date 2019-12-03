@@ -14,19 +14,24 @@ import {
     ModalContent,
     ModalOverlay,
     Stack,
-    useColorMode
+    useColorMode,
+    useDisclosure,
+    useToast
 } from '@chakra-ui/core';
 import useForm from 'react-hook-form';
+
 import Logo from '../components/Logo';
+import {useAuth} from '../utils/auth';
 
 const AuthContent = ({register, errors, type, ...rest}) => (
     <Stack {...rest}>
         <Box as="a" href="/" aria-label="daydrink, Back to homepage">
-            <Logo h="40px" mx="auto" />
+            <Logo pb={8} w="200px" mx="auto" />
         </Box>
         <FormControl isInvalid={errors.email && errors.email.message}>
             <FormLabel>Email Address</FormLabel>
             <Input
+                autoFocus
                 name="email"
                 ref={register({
                     required: 'Please enter your email.'
@@ -77,13 +82,13 @@ const FullScreenAuth = ({type, onSubmit}) => {
     );
 };
 
-export const AuthModal = ({isOpen, onClose, type, onSubmit}) => {
+const AuthModal = ({isOpen, onClose, type, onSubmit}) => {
     const {handleSubmit, register, errors} = useForm();
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} borderRadius={8} size="400px">
+        <Modal isOpen={isOpen} onClose={onClose} size="400px">
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent borderRadius={4}>
                 <ModalCloseButton />
                 <ModalBody>
                     <Flex align="center" justify="center">
@@ -102,6 +107,41 @@ export const AuthModal = ({isOpen, onClose, type, onSubmit}) => {
                 </ModalBody>
             </ModalContent>
         </Modal>
+    );
+};
+
+export const withAuthModal = (Component) => (props) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    const auth = useAuth();
+    const toast = useToast();
+
+    const signUp = ({email, pass}) => {
+        auth.signup(email, pass)
+            .then(() => {
+                toast({
+                    title: 'Success! 🍻',
+                    description: 'Your account has been created.',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true
+                });
+                onClose();
+            })
+            .catch((error) => {
+                toast({
+                    title: 'An error occurred.',
+                    description: error.message,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true
+                });
+            });
+    };
+    return (
+        <>
+            <AuthModal isOpen={isOpen} onClose={onClose} type="Sign Up" onSubmit={signUp} />
+            <Component openAuthModal={onOpen} {...props} />
+        </>
     );
 };
 

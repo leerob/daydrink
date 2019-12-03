@@ -1,41 +1,57 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core';
-import {Box, Heading, Text, Button} from '@chakra-ui/core';
-import Header from '../components/Header';
-import NextLink from 'next/link';
+import {Text, Flex, Spinner} from '@chakra-ui/core';
 
-export const Container = (props) => <Box width="full" maxWidth="1280px" mx="auto" px={6} {...props} />;
+import {useDeals} from '../graphql/hooks';
+import {useAuth} from '../utils/auth';
+import {useSearch} from '../utils/search';
+import {withApollo} from '../graphql/apollo';
+import App from '../components/App';
+import DealCard from '../components/DealCard';
+import AddDealModal from '../components/AddDealModal';
+import EmptySearch from '../components/EmptySearch';
 
-export default () => {
+const DealsPage = () => {
+    const {userId} = useAuth();
+    const {dayOfWeek, alcoholTypeFilters, search} = useSearch();
+    const {data, loading} = useDeals(dayOfWeek);
+
+    const matchesSearch = (deal) => deal.description.toLowerCase().includes(search.toLowerCase());
+    const matchesAlcoholType = (deal) => alcoholTypeFilters.includes(deal.alcoholType);
+    const allDeals = data ? data.deals : [];
+    const filteredDeals = allDeals.filter(matchesSearch).filter(matchesAlcoholType);
+
     return (
-        <Box mb={20}>
-            <Header hideSearch />
-            <Box as="section" pt={40} pb={24}>
-                <Container>
-                    <Box maxW="xl" mx="auto" textAlign="center">
-                        <Heading as="h1" size="xl" fontWeight="semibold">
-                            Stop
-                            <Box as="span" color="teal.500">
-                                {' wasting money '}
-                            </Box>
-                            on drinks at the bar
-                        </Heading>
-
-                        <Text opacity="0.7" fontSize="xl" mt="6">
-                            daydrink helps you find the best drink deals and happy hours in your area. View the cheapest
-                            drinks for the day and filter down to exactly what you're searching for.
-                        </Text>
-
-                        <Box mt="6">
-                            <NextLink href="/signup" passHref>
-                                <Button size="lg" as="a" variantColor="teal">
-                                    Sign Up
-                                </Button>
-                            </NextLink>
-                        </Box>
-                    </Box>
-                </Container>
-            </Box>
-        </Box>
+        <App width="full" maxWidth="1280px" mx="auto" px={6} py={6}>
+            <Text mb={2} fontSize="sm">
+                {'Active '}
+                <b>{dayOfWeek}</b>
+                {' in '}
+                <b>{'Des Moines'}</b>
+            </Text>
+            {loading ? (
+                <Flex pt={24} align="center" justify="center">
+                    <Spinner size="xl" label="Loading Deals" />
+                </Flex>
+            ) : (
+                <>
+                    {filteredDeals.length ? (
+                        filteredDeals.map((deal) => <DealCard key={deal.id} userId={userId} {...deal} />)
+                    ) : (
+                        <EmptySearch />
+                    )}
+                    <Flex justify="flex-end" as="i" color="gray.500">
+                        {`Showing ${filteredDeals.length} out of ${allDeals.length} deals in Des Moines`}
+                    </Flex>
+                    <Flex mt={8} display={['block', 'none', 'none', 'none']}>
+                        <AddDealModal />
+                    </Flex>
+                </>
+            )}
+        </App>
     );
 };
+
+export default withApollo(DealsPage, {
+    ssr: false
+});
