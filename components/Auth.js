@@ -19,6 +19,7 @@ import {
     useToast
 } from '@chakra-ui/core';
 import useForm from 'react-hook-form';
+import {useRouter} from 'next/router';
 
 import Logo from '../components/Logo';
 import {useAuth} from '../utils/auth';
@@ -141,6 +142,36 @@ export const withAuthModal = (Component) => (props) => {
         <>
             <AuthModal isOpen={isOpen} onClose={onClose} type="Sign Up" onSubmit={signUp} />
             <Component openAuthModal={onOpen} {...props} />
+        </>
+    );
+};
+
+export const withSignInRedirect = (Component) => (props) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    const auth = useAuth();
+    const toast = useToast();
+    const router = useRouter();
+
+    const signIn = ({email, pass}) => {
+        auth.signin(email, pass)
+            .then(() => {
+                router.push('/deals');
+            })
+            .catch((error) => {
+                toast({
+                    title: 'An error occurred.',
+                    description: error.message,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true
+                });
+            });
+    };
+
+    return (
+        <>
+            <AuthModal isOpen={isOpen} onClose={onClose} type="Sign In" onSubmit={signIn} />
+            <Component onSignIn={onOpen} {...props} />
         </>
     );
 };

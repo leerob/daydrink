@@ -13,7 +13,7 @@ export default () => {
     const signIn = ({email, pass}) => {
         auth.signin(email, pass)
             .then(() => {
-                router.push('/');
+                router.push('/deals');
             })
             .catch((error) => {
                 toast({

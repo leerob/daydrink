@@ -20,7 +20,7 @@ export default () => {
                     duration: 3000,
                     isClosable: true
                 });
-                router.push('/');
+                router.push('/deals');
             })
             .catch((error) => {
                 toast({
