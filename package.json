@@ -1,6 +1,10 @@
 {
     "name": "daydrink",
     "private": true,
+    "engines": {
+        "node": "10.17.0",
+        "yarn": ">=1.10.0"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
