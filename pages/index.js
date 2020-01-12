@@ -18,7 +18,7 @@ const Header = ({onSignIn}) => (
                         {'Sign In'}
                     </Button>
                     <NextLink href="/deals" passHref>
-                        <Button as="a">{'Find deals'}</Button>
+                        <Button as="a">{'Find Deals'}</Button>
                     </NextLink>
                 </Flex>
             </Flex>
@@ -28,7 +28,7 @@ const Header = ({onSignIn}) => (
 
 const HomePage = ({onSignIn}) => {
     return (
-        <Box h="100vh" background="url(/static/image.png) no-repeat center center fixed">
+        <Box h="100vh">
             <Header onSignIn={onSignIn} />
             <Box as="section" pt={40} pb={24}>
                 <Container>
@@ -45,7 +45,7 @@ const HomePage = ({onSignIn}) => {
                         <Box mt="6">
                             <NextLink href="/signup" passHref>
                                 <Button size="lg" as="a" variantColor="teal">
-                                    Save some money
+                                    Let's Get Started
                                 </Button>
                             </NextLink>
                         </Box>

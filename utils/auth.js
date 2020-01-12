@@ -3,13 +3,10 @@ import queryString from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import firebaseConfig from '../firebase.json';
+
 if (!firebase.apps.length) {
-    firebase.initializeApp({
-        apiKey: '',
-        authDomain: 'day-drink.firebaseapp.com',
-        projectId: 'day-drink',
-        appID: ''
-    });
+    firebase.initializeApp(firebaseConfig);
 }
 
 const authContext = createContext();
@@ -88,7 +85,7 @@ function useProvideAuth() {
     }, []);
 
     return {
-        user,
+        userId: user && user.uid,
         signin,
         signup,
         signout,

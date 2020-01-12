@@ -4,7 +4,6 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "now-build": "next build",
         "start": "next start"
     },
     "dependencies": {
@@ -19,7 +18,6 @@
         "date-fns": "^2.8.1",
         "emotion-theming": "10.0.10",
         "firebase": "^7.5.0",
-        "formik": "^1.5.8",
         "graphql": "^14.5.8",
         "graphql-tag": "^2.10.1",
         "isomorphic-unfetch": "^3.0.0",
@@ -29,7 +27,6 @@
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-hook-form": "^3.28.7",
-        "react-lorem-component": "^0.13.0",
         "react-map-gl": "^5.1.3"
     }
 }

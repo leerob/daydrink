@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "daydrink",
+    "alias": "daydrink.io",
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@now/next"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*\\.(js|jpg|json|css|ico|png)$)",
+            "dest": "/$1",
+            "headers": {"cache-control": "public,max-age=31536000,immutable"}
+        }
+    ]
+}
