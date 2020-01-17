@@ -3,10 +3,10 @@ import queryString from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-import firebaseConfig from '../firebase.json';
+import prod from '../.firebase/prod.json';
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(prod);
 }
 
 const authContext = createContext();
