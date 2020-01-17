@@ -18,7 +18,7 @@ import {
     useDisclosure,
     useToast
 } from '@chakra-ui/core';
-import useForm from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 
 import Logo from '../components/Logo';

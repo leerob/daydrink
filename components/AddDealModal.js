@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import useForm from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import {
     useDisclosure,
