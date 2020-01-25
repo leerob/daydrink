@@ -82,7 +82,7 @@ const Voter = ({dealId, userId, score, userDeals, openAuthModal}) => {
                 />
                 <Box fontWeight="semibold">{score}</Box>
                 <IconButton
-                    aria-label="Upvote"
+                    aria-label="Downvote"
                     icon="chevron-down"
                     size="sm"
                     fontSize="20px"
