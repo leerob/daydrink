@@ -2,35 +2,43 @@
     "name": "daydrink",
     "private": true,
     "engines": {
-        "node": "10.17.0",
+        "node": "12.13.1",
         "yarn": ">=1.10.0"
     },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "test": "jest"
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
         "@apollo/react-ssr": "^3.1.3",
-        "@chakra-ui/core": "^0.4.1",
-        "@emotion/core": "10.0.10",
-        "@emotion/styled": "10.0.11",
-        "apollo-cache-inmemory": "^1.6.3",
-        "apollo-client": "^2.6.4",
+        "@chakra-ui/core": "^0.5.2",
+        "@emotion/core": "10.0.27",
+        "@emotion/styled": "10.0.27",
+        "apollo-cache-inmemory": "^1.6.5",
+        "apollo-client": "^2.6.8",
         "apollo-link-http": "^1.5.16",
-        "date-fns": "^2.8.1",
-        "emotion-theming": "10.0.10",
-        "firebase": "^7.5.0",
+        "date-fns": "^2.9.0",
+        "emotion-theming": "10.0.27",
+        "firebase": "^7.7.0",
         "graphql": "^14.5.8",
         "graphql-tag": "^2.10.1",
         "isomorphic-unfetch": "^3.0.0",
-        "next": "9.0.3",
-        "next-seo": "2.0.0",
-        "query-string": "^6.9.0",
+        "next": "9.2.0",
+        "next-seo": "3.3.0",
+        "query-string": "^6.10.0",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
-        "react-hook-form": "^3.28.7",
-        "react-map-gl": "^5.1.3"
+        "react-hook-form": "^4.5.5",
+        "react-map-gl": "^5.2.1"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.0.2",
+        "@testing-library/react": "^9.4.0",
+        "babel-jest": "^24.9.0",
+        "jest": "^24.9.0",
+        "mutationobserver-shim": "^0.3.3"
     }
 }

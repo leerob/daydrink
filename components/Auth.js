@@ -18,7 +18,7 @@ import {
     useDisclosure,
     useToast
 } from '@chakra-ui/core';
-import useForm from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/router';
 
 import Logo from '../components/Logo';
@@ -33,6 +33,7 @@ const AuthContent = ({register, errors, type, ...rest}) => (
             <FormLabel>Email Address</FormLabel>
             <Input
                 autoFocus
+                aria-label="Email Address"
                 name="email"
                 ref={register({
                     required: 'Please enter your email.'
@@ -44,6 +45,7 @@ const AuthContent = ({register, errors, type, ...rest}) => (
         <FormControl isInvalid={errors.pass && errors.pass.message}>
             <FormLabel>Password</FormLabel>
             <Input
+                aria-label="Password"
                 name="pass"
                 type="password"
                 ref={register({

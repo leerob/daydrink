@@ -17,7 +17,6 @@ const BarCard = ({name, address, deals, imageUrl}) => {
                 <AspectRatioBox w="100%" maxWidth="120px" ratio={1}>
                     <Image src={imageUrl} alt={name} objectFit="cover" />
                 </AspectRatioBox>
-
                 <Stack ml={3} mt={2} mb={2}>
                     <Flex align="baseline">
                         <Badge variantColor="blue">{badge}</Badge>
