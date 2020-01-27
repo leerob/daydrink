@@ -30,21 +30,15 @@ describe('BarCard', () => {
         const {getByText} = render(<BarCard {...expectedProps} />);
         const deal = getByText('1 deal');
 
-        expect(deal).not.toBeNull();
+        expect(deal).toBeVisible();
     });
 
-    test('badge with multiple deal', () => {
+    test('badge with multiple deals', () => {
         expectedProps.deals = [{}, {}];
 
         const {getByText} = render(<BarCard {...expectedProps} />);
         const deals = getByText('2 deals');
 
-        expect(deals).not.toBeNull();
-    });
-
-    test('matches snapshot', () => {
-        const {asFragment} = render(<BarCard {...expectedProps} />);
-
-        expect(asFragment()).toMatchSnapshot();
+        expect(deals).toBeVisible();
     });
 });
