@@ -37,8 +37,10 @@
     "devDependencies": {
         "@testing-library/jest-dom": "^5.0.2",
         "@testing-library/react": "^9.4.0",
+        "@types/react": "^16.9.19",
         "babel-jest": "^24.9.0",
         "jest": "^24.9.0",
-        "mutationobserver-shim": "^0.3.3"
+        "mutationobserver-shim": "^0.3.3",
+        "typescript": "^3.7.5"
     }
 }

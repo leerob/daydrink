@@ -1,7 +1,15 @@
+import React from 'react';
 import {useColorMode, Box, Image, AspectRatioBox, Badge, Text, Flex, Stack} from '@chakra-ui/core';
 import Location from '../icons/Location';
 
-const BarCard = ({name, address, deals, imageUrl}) => {
+interface BarProps {
+    name: string;
+    address: string;
+    deals: object[];
+    imageUrl: string;
+}
+
+const BarCard = ({name, address, deals, imageUrl}: BarProps) => {
     const {colorMode} = useColorMode();
     const badge = deals.length === 1 ? `${deals.length} deal` : `${deals.length} deals`;
 
