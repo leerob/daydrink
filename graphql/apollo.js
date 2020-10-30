@@ -117,7 +117,7 @@ function createApolloClient(initialState = {}) {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
-            uri: 'https://daydrink.herokuapp.com/v1/graphql',
+            uri: process.env.GRAPHQL_URL,
             credentials: 'same-origin',
             fetch
         }),
