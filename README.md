@@ -10,6 +10,14 @@ This application is part of [Mastering Next.js](https://masteringnextjs.com/).
 ```bash
 $ git clone https://github.com/leerob/daydrink.git
 $ cd leerob.io
+```
+
+Set GraphQL URL for Apollo Client by adding the following field to `.env` file.
+```
+GRAPHQL_URL=
+```
+
+```
 $ yarn
 $ yarn dev
 ```
